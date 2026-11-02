@@ -10,7 +10,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>OSCPointHelper</AssemblyName>
     <RootNamespace>OscpointHelper</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
