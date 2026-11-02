@@ -34,7 +34,7 @@ namespace OscpointHelper
     /// </summary>
     class HelperContext : ApplicationContext
     {
-        public const string Version = "0.1.0";
+        public const string Version = "0.1.1";
 
         readonly Settings _settings = Settings.Load();
         readonly PowerPoint _ppt = new PowerPoint();
