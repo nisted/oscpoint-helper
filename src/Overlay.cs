@@ -21,6 +21,11 @@ namespace OscpointHelper
         const int WM_NCLBUTTONDOWN = 0xA1, HTCAPTION = 0x2;
         const int WS_EX_NOACTIVATE = 0x08000000, WS_EX_TOOLWINDOW = 0x80, WS_EX_TOPMOST = 0x8;
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
+        static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        const uint SWP_NOSIZE = 0x0001, SWP_NOMOVE = 0x0002, SWP_NOACTIVATE = 0x0010, SWP_SHOWWINDOW = 0x0040, SWP_NOOWNERZORDER = 0x0200;
+
         public Overlay(Settings settings)
         {
             _settings = settings;
@@ -84,7 +89,11 @@ namespace OscpointHelper
         public void ShowBox()
         {
             if (!Visible) Show();
-            TopMost = true; // re-assert over the presenter view
+            // Setting TopMost = true again does nothing once it's already true, so PowerPoint's own
+            // always-on-top slide show window (redrawing during video playback) could sit over the box.
+            // Push it to the very front of the topmost band each time, without taking focus.
+            if (IsHandleCreated)
+                SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW | SWP_NOOWNERZORDER);
         }
 
         public void ShowRemaining(int remainingMs)
